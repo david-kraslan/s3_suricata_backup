@@ -1,5 +1,6 @@
 package main
 
+// required packages
 import (
 	"bytes"
 	"context"
@@ -14,17 +15,20 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 )
 
+// constants
 const (
 	S3BucketName = "placeholder" // example: "network-firewall-backups-00000"
 	S3Folder     = "placeholder" // example: "suricata_backups"
 	Region       = "placeholder" // example: "us-west-1"
 )
 
+// rule group data structure
 type RuleGroup struct {
 	Name string
 	Arn  string
 }
 
+// list all rule groups in region
 func ListRuleGroups(ctx context.Context, client *networkfirewall.Client) ([]RuleGroup, error) {
 	log.Println("Listing rule groups...")
 	var ruleGroups []RuleGroup
@@ -46,6 +50,7 @@ func ListRuleGroups(ctx context.Context, client *networkfirewall.Client) ([]Rule
 	return ruleGroups, nil
 }
 
+// fetch all rules in each rule group
 func FetchSuricataRules(ctx context.Context, client *networkfirewall.Client, ruleGroupArn string) (string, error) {
 	log.Printf("Fetching Suricata rules for Rule Group ARN: %s", ruleGroupArn)
 	resp, err := client.DescribeRuleGroup(ctx, &networkfirewall.DescribeRuleGroupInput{
@@ -64,6 +69,7 @@ func FetchSuricataRules(ctx context.Context, client *networkfirewall.Client, rul
 	return "", nil
 }
 
+// upload rules by rule group to s3
 func UploadToS3(ctx context.Context, client *s3.Client, content, fileName, bucketName, folder string) error {
 	key := fmt.Sprintf("%s/%s", folder, fileName)
 	log.Printf("Uploading to S3 bucket %s, key: %s", bucketName, key)
@@ -81,6 +87,7 @@ func UploadToS3(ctx context.Context, client *s3.Client, content, fileName, bucke
 	return nil
 }
 
+// main Lambda funtion start
 func LambdaHandler(ctx context.Context) (string, error) {
 	log.Println("Loading AWS configuration...")
 	cfg, err := config.LoadDefaultConfig(ctx, config.WithRegion(Region))
