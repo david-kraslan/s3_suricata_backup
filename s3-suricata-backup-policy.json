@@ -1,0 +1,24 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "network-firewall:DescribeRuleGroup",
+                "network-firewall:ListTagsForResource",
+                "network-firewall:DescribeFirewallPolicy",
+                "network-firewall:DescribeLoggingConfiguration",
+                "network-firewall:ListFirewalls",
+                "network-firewall:DescribeResourcePolicy",
+                "network-firewall:DescribeRuleGroupMetadata",
+                "network-firewall:DescribeFirewall",
+                "network-firewall:ListTLSInspectionConfigurations",
+                "network-firewall:ListFirewallPolicies",
+                "network-firewall:DescribeTLSInspectionConfiguration",
+                "network-firewall:ListRuleGroups"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
